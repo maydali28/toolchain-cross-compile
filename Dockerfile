@@ -1,7 +1,5 @@
 FROM debian:jessie
 
-ENV TOOLCHAIN_CONFIG=$TOOLCHAIN-PREFIX
-ENV CROSSTOOL_VERION=$CROSSTOOL-NG
 
 RUN apt-get update \
 	&& DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
@@ -18,6 +16,11 @@ RUN apt-get update \
 RUN DEBIAN_FRONTEND=noninteractive dpkg --add-architecture i386 \
 	&& apt-get update \
 	&& apt-get install -y libc6:i386 libncurses5:i386 libstdc++6:i386
+
+ ARG TOOLCHAIN_CONFIG
+ ENV TOOLCHAIN_CONFIG=$TOOLCHAIN_CONFIG
+ ARG CROSSTOOL_VERION
+ ENV CROSSTOOL_VERION=$CROSSTOOL_VERION
 
  RUN useradd -ms /bin/bash build
  USER build
@@ -53,7 +56,7 @@ ENV arm-AR=${TOOLCHAIN_CONFIG}-ar \
 	ARCH=arm \
 	CROSS_COMPILE=${TOOLCHAIN_CONFIG}-
 
-EXPOSE 873
+#EXPOSE 873
 
 WORKDIR ${HOME}
 RUN mkdir workspace

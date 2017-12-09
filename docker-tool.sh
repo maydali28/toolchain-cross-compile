@@ -15,6 +15,7 @@ if [ ! -e '$default_file' ] ; then
         export $key
     esac   
   done < "$default_file"
+#  source ~/.profile
 else 
 	echo -e "error default file not found in $DIR/scripts"
 fi

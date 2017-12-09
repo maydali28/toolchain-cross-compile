@@ -93,7 +93,8 @@ fi
 
 if [[ ${BUILD} == true ]]; then
 	echo "building ${TAG} image"
-	docker build -t ${TAG} ..
+	echo "TOOLCHAIN_CONFIG=$TOOLCHAINPREFIX --build-arg CROSSTOOL_VERION=$CROSSTOOLNG"
+	docker build --build-arg TOOLCHAIN_CONFIG=$TOOLCHAINPREFIX --build-arg CROSSTOOL_VERION=$CROSSTOOLNG -t ${TAG} ..
 fi
 
 if [[ ${RUN} == true ]]; then
@@ -115,8 +116,8 @@ if [[ ${RUN} == true ]]; then
 			echo "creating ${TOOLCHAIN}"
 			mkdir "${TOOLCHAIN}"
 		fi
-		echo 'running ${NAME} container'
-		docker run -it --privileged=true --name ${NAME} -p 873:873 \
+		echo "running ${NAME} container"
+		docker run -it --privileged=true --name ${NAME} \
 		-v "${VOLUME}":/home/build/workspace \
 		-v "${TOOLCHAIN}":/home/build/x-tools \
 		${TAG} \
